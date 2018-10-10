@@ -5,24 +5,25 @@
 	<groupId>webservices</groupId>
 	<artifactId>sb-rest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+    <packaging>war</packaging>
 	
 	<name>sb-rest</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <tomcat.version>7.0.67</tomcat.version> 
 	</properties>
   
  	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.4.RELEASE</version>
+		<version>1.5.8.RELEASE</version>
 		<relativePath/>
 	</parent>
 	
 	<build>
-		<finalName>fff</finalName>
+        <finalName>fff</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -43,10 +44,11 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
+		<!-- juli fot tomcat 7-->
+        <dependency>                                 
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-juli</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
 	</dependencies>
 </project>
