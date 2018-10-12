@@ -120,9 +120,11 @@ def get_branch_deployment_environment(String branch_type) {
 def mvn(String goals) {
     def mvnHome = tool "mvn"
 
-    withEnv(["PATH+MAVEN=${mvnHome}/bin"]) {
-        sh "mvn -B ${goals}"
-    }
+    if (isUnix()) {
+         sh "'${mvnHome}/bin/mvn' -B ${goals}"
+	  } else {
+	     bat(/"${mvnHome}\bin\mvn" -B ${goals}/)
+	  }
 }
 
 def version() {
