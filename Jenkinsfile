@@ -51,45 +51,6 @@ if (branch_deployment_environment) {
     }
 }
 
-if (branch_type == "dev") {
-    stage('start release') {
-        timeout(time: 1, unit: 'HOURS') {
-            input "Do you want to start a release?"
-        }
-        node {
-            sshagent(['f1ad0f5d-df0d-441a-bea0-fd2c34801427']) {
-                mvn("jgitflow:release-start")
-            }
-        }
-    }
-}
-
-if (branch_type == "release") {
-    stage('finish release') {
-        timeout(time: 1, unit: 'HOURS') {
-            input "Is the release finished?"
-        }
-        node {
-            sshagent(['f1ad0f5d-df0d-441a-bea0-fd2c34801427']) {
-                mvn("jgitflow:release-finish -Dmaven.javadoc.skip=true -DnoDeploy=true")
-            }
-        }
-    }
-}
-
-if (branch_type == "hotfix") {
-    stage('finish hotfix') {
-        timeout(time: 1, unit: 'HOURS') {
-            input "Is the hotfix finished?"
-        }
-        node {
-            sshagent(['f1ad0f5d-df0d-441a-bea0-fd2c34801427']) {
-                mvn("jgitflow:hotfix-finish -Dmaven.javadoc.skip=true -DnoDeploy=true")
-            }
-        }
-    }
-}
-
 // Utility functions
 def get_branch_type(String branch_name) {
     //Must be specified according to <flowInitContext> configuration of jgitflow-maven-plugin in pom.xml
