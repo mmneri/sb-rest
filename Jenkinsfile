@@ -36,7 +36,7 @@ if (branch_deployment_environment) {
             }
         }
         node {
-            sh "echo Deploying to ${branch_deployment_environment}"
+            echo "Deploying to ${branch_deployment_environment}"
             //TODO specify the deployment
         }
     }
@@ -44,7 +44,7 @@ if (branch_deployment_environment) {
     if (branch_deployment_environment != "prod") {
         stage('integration tests') {
             node {
-                sh "echo Running integration tests in ${branch_deployment_environment}"
+                echo "Running integration tests in ${branch_deployment_environment}"
                 //TODO do the actual tests
             }
         }
