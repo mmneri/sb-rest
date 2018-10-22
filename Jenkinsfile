@@ -17,23 +17,11 @@ stage('build') {
     }
 }
 
- stage('Create build output'){
-    node {
-    	// junit '**/target/surefire-reports/TEST-*.xml'
-      	// archive 'target/*.war'
-	    // Make the output directory.
-	    sh "mkdir -p output"
-	
-	    // Write an useful file, which is needed to be archived.
-	    writeFile file: "output/usefulfile.txt", text: "This file is useful, need to archive it."
-	
-	    // Write an useless file, which is not needed to be archived.
-	    writeFile file: "output/uselessfile.md", text: "This file is useless, no need to archive it."
-	
-	    stage "Archive build output"
-	    
+stage('Create build output'){
+    node {	    
 	    // Archive the build output artifacts.
-	    archiveArtifacts artifacts: 'output/*.txt', excludes: 'output/*.md'
+	    archiveArtifacts artifacts: 'target/*.war' , fingerprint: true
+	    // junit '**/target/surefire-reports/TEST-*.xml'
     }
 }
 
