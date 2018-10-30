@@ -8,7 +8,7 @@ stage('Checkout and Unit Test') {
     	git 'https://github.com/mmneri/sb-deploy.git'
       	utilities = load 'utilities.groovy'  
         checkout scm
-        def v = version()
+        def v = utilities.version()
         currentBuild.displayName = "${env.BRANCH_NAME}-${v}-${env.BUILD_NUMBER}"
         utilities.mvn "clean verify"
     }
