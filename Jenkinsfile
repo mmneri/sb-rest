@@ -8,7 +8,7 @@ stage('Checkout and Unit Test') {
     	git 'https://github.com/mmneri/sb-deploy.git'
       	utilities = load 'utilities.groovy'  
         checkout scm
-        def v = utilities.version()
+        def v = version()
         currentBuild.displayName = "${env.BRANCH_NAME}-${v}-${env.BUILD_NUMBER}"
         utilities.mvn "clean verify"
     }
@@ -43,5 +43,11 @@ if (branch_deployment_environment) {
             //TODO specify the deployment
         }
     }
+}
+
+
+def version() {
+    def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+    return matcher ? matcher[0][1] : null
 }
 
