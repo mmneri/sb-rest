@@ -3,12 +3,13 @@
 properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', numToKeepStr: '10']]])
 
 def utilities
+def scmVars
 def appname = "sb-rest"
 def downstreamJob = "sb-update-manifest"
 if(!env.BRANCH_NAME){
-    BRANCH_NAME=""
+    BRANCH_NAME = ""
 } else {
-    BRANCH_NAME="/${env.BRANCH_NAME}"
+    BRANCH_NAME = "/${env.BRANCH_NAME}"
 }
 echo "BRANCH_NAME=$BRANCH_NAME"
 
@@ -18,7 +19,19 @@ stage('Checkout and Unit Test') {
     node {
     	git 'https://github.com/mmneri/sb-deploy.git'
       	utilities = load 'utilities.groovy'  
-        checkout scm
+        scmVars = checkout scm
+        // scmVars contains the following values
+        // GIT_BRANCH=origin/mybranch
+        // GIT_COMMIT=fc8279a107ebaf806f2e310fce15a7a54238eb71
+        // GIT_PREVIOUS_COMMIT=6f2e319a1fc82707ebaf800fce15a7a54238eb71
+        // GIT_PREVIOUS_SUCCESSFUL_COMMIT=310fce159a1fc82707ebaf806f2ea7a54238eb71
+        // GIT_URL= 
+	
+	
+	if(!BRANCH_NAME){
+	    BRANCH_NAME = "/${scmVars.GIT_BRANCH}"
+	}
+	    
         v = version()
         currentBuild.displayName = "${env.BRANCH_NAME}-${v}-${env.BUILD_NUMBER}"
         utilities.mvn "clean verify"
