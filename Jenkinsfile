@@ -29,7 +29,7 @@ stage('Checkout') {
 	    branchName = utilities.getBranchName()
 	    if(!branchName){
 		gitBranch = "${scmVars.GIT_BRANCH}"
-		BRANCH_NAME = gitBranch.replace("origin/", "")        
+		gitBranch = gitBranch.replace("origin/", "")        
 	    	BRANCH_NAME = "${gitBranch}"
 	    } else {
 		BRANCH_NAME = "${branchName}" 
