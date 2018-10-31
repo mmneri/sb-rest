@@ -37,7 +37,7 @@ stage('Checkout') {
 	}
         utilities.log "BRANCH_NAME" , "${BRANCH_NAME}"    
         v = version()
-        currentBuild.displayName = "${branchName}-${v}-${env.BUILD_NUMBER}"        
+        currentBuild.displayName = "${BRANCH_NAME}-${v}-${env.BUILD_NUMBER}"        
     }
 }
 
