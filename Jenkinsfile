@@ -3,7 +3,7 @@
 properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', numToKeepStr: '10']]])
 def utilities
 def appname = "sb-rest"
-def downstreamJob="../sb-update-manifest"
+def downstreamJob = "sb-update-manifest"
 if(!env.BRANCH_NAME){
     BRANCH_NAME=""
 } else {
