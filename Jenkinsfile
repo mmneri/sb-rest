@@ -37,13 +37,11 @@ stage('Checkout') {
         BRANCH_TYPE = utilities.getBranchType("${BRANCH_NAME}")
         BUILD_URL = "${scmVars.GIT_URL}"
 		GIT_COMMIT = "${scmVars.GIT_COMMIT}"    
-        versions = versionInParts()
-        echo "versions = ${versions}"
+        versions = majorVersion()
         major = versions[1]
-        echo "major =  ${major}"
         minor = versions[2]
-        incremental = versions[3]
-        v = "${major}.${minor}.${incremental}"
+        patch = versions[3]
+        v = "${major}.${minor}.${patch}"
         customWorkspace "/${appname}_${BRANCH_TYPE}"
         currentBuild.displayName = "${BRANCH_TYPE}-${v}-${env.BUILD_NUMBER}"    
 		stash exclude: 'target/', include: '**', name: 'source'    
@@ -84,7 +82,7 @@ def version() {
     return matcher ? matcher[0][1] : null
 }
 
-def versionInParts() {
-    def matcher = readFile('pom.xml') =~ '<version>(\\d*)\\.(\\d*)\\.(\\d*)(-SNAPSHOT)*</version>'
+def majorVersion() {
+    def matcher = readFile('pom.xml') =~ '<version>(\\d*)\\.(\\d*)\\.(\\d*)(-${BUILD_NUMBER})*</version>'
     matcher ? matcher[0] : null
 }
