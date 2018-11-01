@@ -38,7 +38,9 @@ stage('Checkout') {
         BUILD_URL = "${scmVars.GIT_URL}"
 		GIT_COMMIT = "${scmVars.GIT_COMMIT}"    
         versions = versionInParts()
+        echo "versions = ${versions}"
         major = versions[1]
+        echo "major =  ${major}"
         minor = versions[2]
         incremental = versions[3]
         v = "${major}.${minor}.${incremental}"
