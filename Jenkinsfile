@@ -38,8 +38,11 @@ stage('Checkout') {
         BUILD_URL = "${scmVars.GIT_URL}"
 		GIT_COMMIT = "${scmVars.GIT_COMMIT}"    
         versions = versionInParts()
-        v = "${versions[1]}.${versions[2]}.${versions[3]}"
-        // customWorkspace "/${appname}_${BRANCH_TYPE}"
+        major = versions[1]
+        minor = versions[2]
+        incremental = versions[3]
+        v = "${major}.${minor}.${incremental}"
+        customWorkspace "/${appname}_${BRANCH_TYPE}"
         currentBuild.displayName = "${BRANCH_TYPE}-${v}-${env.BUILD_NUMBER}"    
 		stash exclude: 'target/', include: '**', name: 'source'    
     }
