@@ -42,8 +42,8 @@ stage('Checkout') {
         minor = versions[2]
         patch = versions[3]
         v = "${major}.${minor}.${patch}"
-        customWorkspace "/${appname}_${BRANCH_TYPE}"
-        currentBuild.displayName = "${BRANCH_TYPE}-${v}-${env.BUILD_NUMBER}"    
+        currentBuild.displayName = "${BRANCH_TYPE}-${v}-${env.BUILD_NUMBER}" 
+        echo "WORKSPACE = ${env.WORKSPACE}" 
 		stash exclude: 'target/', include: '**', name: 'source'    
     }
 }
