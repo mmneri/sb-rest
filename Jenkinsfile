@@ -83,6 +83,6 @@ def version() {
 }
 
 def majorVersion() {
-    def matcher = readFile('pom.xml') =~ '<version>(\\d*)\\.(\\d*)\\.(\\d*)\\-(\\d*)*</version>'
+    def matcher = readFile('pom.xml') =~ '<version>(\\d*)\\.(\\d*)\\.(\\d*)(-.*)*</version>'
     matcher ? matcher[0] : null
 }
