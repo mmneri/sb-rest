@@ -26,7 +26,8 @@ stage('Checkout') {
 	
 		// si env.BRANCH_NAME return null    
 		if(BRANCH_NAME == ""){
-			gitBranch = "${scmVars.GIT_BRANCH}"       
+			gitBranch = "${scmVars.GIT_BRANCH}"
+			gitBranch = gitBranch.replace("origin/","")        
 			BRANCH_NAME = "${gitBranch}"
 		}
         utilities.log "BRANCH_NAME" , "${BRANCH_NAME}"    
