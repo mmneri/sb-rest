@@ -4,13 +4,15 @@
 
 	<groupId>webservices</groupId>
 	<artifactId>sb-rest</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
-	
-	<name>sb-rest</name>
-	<url>http://maven.apache.org</url>
+	<version>0.0.1-${BUILD_NUMBER}</version>
+    <packaging>${PACKAGING}</packaging>
 
 	<properties>
+		<BUILD_NUMBER>SNAPSHOT</BUILD_NUMBER>
+		<BUILD_URL>Not built with Jenkins</BUILD_URL>
+		<GIT_COMMIT>Not supplied</GIT_COMMIT>
+		<PACKAGING>war</PACKAGING>
+		<FINAL_NAME>fff</FINAL_NAME>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>      
         <jgitflow.maven.plugin.version>1.0-m4.3</jgitflow.maven.plugin.version>
 	</properties>
@@ -23,7 +25,7 @@
 	</parent>
 	
 	<build>
-        <finalName>fff</finalName>
+        <finalName>${FINAL_NAME}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -41,7 +43,7 @@
                     <noDeploy>true</noDeploy>
                     <flowInitContext>
                         <masterBranchName>master</masterBranchName>
-                        <developBranchName>development</developBranchName>
+                        <developBranchName>dev</developBranchName>
                         <featureBranchPrefix>feature/</featureBranchPrefix>
                         <releaseBranchPrefix>release/</releaseBranchPrefix>
                         <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
