@@ -44,6 +44,7 @@ stage('Checkout') {
         v = "${major}.${minor}.${patch}"
         currentBuild.displayName = "${BRANCH_TYPE}-${v}-${env.BUILD_NUMBER}" 
         echo "WORKSPACE = ${env.WORKSPACE}" 
+        v = "${v}-${env.BUILD_NUMBER}"
 		stash exclude: 'target/', include: '**', name: 'source'    
     }
 }
