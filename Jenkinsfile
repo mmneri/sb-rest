@@ -28,15 +28,12 @@ stage('Checkout') {
 		// GIT_PREVIOUS_SUCCESSFUL_COMMIT=310fce159a1fc82707ebaf806f2ea7a54238eb71
 		// GIT_URL= 	
 		
-		def lastSuccessfulCommit = getLastSuccessfulCommit()
-		def currentCommit = commitHashForBuild( currentBuild.rawBuild )
-		if (lastSuccessfulCommit) {
-			commits = sh(
-			  script: "git rev-list $currentCommit \"^$lastSuccessfulCommit\"",
-			  returnStdout: true
-			).split('\n')
-			println "Commits are: $commits"
-		}
+		passedBuilds = []
+
+		  lastSuccessfulBuild(passedBuilds, currentBuild);
+		
+		  def changeLog = getChangeLog(passedBuilds)
+		  echo "changeLog ${changeLog}"
 	
 		// si env.BRANCH_NAME return null    
 		if(BRANCH_NAME == ""){
@@ -99,20 +96,27 @@ def majorVersion() {
     matcher ? matcher[0] : null
 }
 
-def getLastSuccessfulCommit() {
-  def lastSuccessfulHash = null
-  def lastSuccessfulBuild = currentBuild.rawBuild.getPreviousSuccessfulBuild()
-  if ( lastSuccessfulBuild ) {
-    lastSuccessfulHash = commitHashForBuild( lastSuccessfulBuild )
-  }
-  return lastSuccessfulHash
+
+def lastSuccessfulBuild(passedBuilds, build) {
+  if ((build != null) && (build.result != 'SUCCESS')) {
+      passedBuilds.add(build)
+      lastSuccessfulBuild(passedBuilds, build.getPreviousBuild())
+   }
 }
 
-/**
- * Gets the commit hash from a Jenkins build object, if any
- */
 @NonCPS
-def commitHashForBuild( build ) {
-  def scmAction = build?.actions.find { action -> action instanceof jenkins.scm.api.SCMRevisionAction }
-  return scmAction?.revision?.hash
-}
+def getChangeLog(passedBuilds) {
+    def log = ""
+    for (int x = 0; x < passedBuilds.size(); x++) {
+        def currentBuild = passedBuilds[x];
+        def changeLogSets = currentBuild.rawBuild.changeSets
+        for (int i = 0; i < changeLogSets.size(); i++) {
+            def entries = changeLogSets[i].items
+            for (int j = 0; j < entries.length; j++) {
+                def entry = entries[j]
+                log += "* ${entry.msg} by ${entry.author} \n"
+            }
+        }
+    }
+    return log;
+  }
