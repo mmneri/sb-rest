@@ -31,7 +31,7 @@ stage('Checkout') {
 		def lastSuccessfulCommit = getLastSuccessfulCommit()
 		def currentCommit = commitHashForBuild( currentBuild.rawBuild )
 		if (lastSuccessfulCommit) {
-			commits = utilities.cmd(
+			commits = sh(
 			  script: "git rev-list $currentCommit \"^$lastSuccessfulCommit\"",
 			  returnStdout: true
 			).split('\n')
