@@ -27,6 +27,16 @@ stage('Checkout') {
 		// GIT_PREVIOUS_COMMIT=6f2e319a1fc82707ebaf800fce15a7a54238eb71
 		// GIT_PREVIOUS_SUCCESSFUL_COMMIT=310fce159a1fc82707ebaf806f2ea7a54238eb71
 		// GIT_URL= 	
+		
+		def lastSuccessfulCommit = getLastSuccessfulCommit()
+		def currentCommit = commitHashForBuild( currentBuild.rawBuild )
+		if (lastSuccessfulCommit) {
+			commits = utilities.cmd(
+			  script: "git rev-list $currentCommit \"^$lastSuccessfulCommit\"",
+			  returnStdout: true
+			).split('\n')
+			println "Commits are: $commits"
+		}
 	
 		// si env.BRANCH_NAME return null    
 		if(BRANCH_NAME == ""){
@@ -87,4 +97,22 @@ def version() {
 def majorVersion() {
     def matcher = readFile('pom.xml') =~ '<version>(\\d*)\\.(\\d*)\\.(\\d*)(-.*)*</version>'
     matcher ? matcher[0] : null
+}
+
+def getLastSuccessfulCommit() {
+  def lastSuccessfulHash = null
+  def lastSuccessfulBuild = currentBuild.rawBuild.getPreviousSuccessfulBuild()
+  if ( lastSuccessfulBuild ) {
+    lastSuccessfulHash = commitHashForBuild( lastSuccessfulBuild )
+  }
+  return lastSuccessfulHash
+}
+
+/**
+ * Gets the commit hash from a Jenkins build object, if any
+ */
+@NonCPS
+def commitHashForBuild( build ) {
+  def scmAction = build?.actions.find { action -> action instanceof jenkins.scm.api.SCMRevisionAction }
+  return scmAction?.revision?.hash
 }
