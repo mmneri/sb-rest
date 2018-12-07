@@ -72,7 +72,7 @@ stage('Build') {
     node {
         unstash 'source'        
         try {
-		    utilities.mvn "clean package -DskipTests -DBUILD_NUMBER=${env.BUILD_NUMBER} -DBUILD_URL=${BUILD_URL} -DGIT_COMMIT=${GIT_COMMIT}"
+		    utilities.mvn "clean package -DskipTests -DBUILD_NUMBER=${env.BUILD_NUMBER} -DBUILD_URL=${BUILD_URL} -DGIT_COMMIT=${GIT_COMMIT} -Pserver"
 		} finally {
             // Archive the build output artifacts.
 			archiveArtifacts artifacts: 'target/*.war' , fingerprint: true
